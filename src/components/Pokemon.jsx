@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 function Pokemon() {
   const [pokemonList, setPokemonList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   async function getAllPokemon() {
     const apiUrl = "https://pokeapi.co/api/v2/pokemon";
@@ -24,6 +25,7 @@ function Pokemon() {
 
   useEffect(() => {
     getAllPokemon();
+    setLoading(false);
   }, []);
 
   // console.log(pokemonList);
@@ -32,6 +34,11 @@ function Pokemon() {
     <>
       <div className="wrapper">
         <div className="content">
+          {loading && (
+            <div className="loading">
+              ngeteh dulu broo, halaman sedang di-load...
+            </div>
+          )}
           <div className="grid">
             {pokemonList.map((item, index) => {
               return (
