@@ -5,12 +5,17 @@ function Pokemon() {
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState(false);
   const [dataDetail, setDataDetail] = useState([]);
+  const [prevUrl, setPrevUrl] = useState("");
+  const [nextUrl, setNextUrl] = useState("");
+  const [apiUrl, setApiUrl] = useState("https://pokeapi.co/api/v2/pokemon");
 
   async function getAllPokemon() {
-    const apiUrl = "https://pokeapi.co/api/v2/pokemon";
     const resData = await fetch(apiUrl);
     const jsonData = await resData.json();
     // console.log(jsonData);
+
+    setPrevUrl(jsonData.previous || "");
+    setNextUrl(jsonData.next || "");
 
     let pokemonDetail = [];
 
@@ -47,7 +52,7 @@ function Pokemon() {
   useEffect(() => {
     getAllPokemon();
     setLoading(false);
-  }, []);
+  }, [apiUrl]);
 
   // console.log(pokemonList);
 
@@ -82,6 +87,29 @@ function Pokemon() {
               );
             })}
           </div>
+          {prevUrl && (
+            <div className="pagination-left">
+              <button
+                onClick={() => {
+                  setApiUrl(prevUrl);
+                }}
+              >
+                &laquo;
+              </button>
+            </div>
+          )}
+
+          {nextUrl && (
+            <div className="pagination-right">
+              <button
+                onClick={() => {
+                  setApiUrl(nextUrl);
+                }}
+              >
+                &raquo;
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -93,3 +121,5 @@ export default Pokemon;
 // async await untuk mengambil data dimana datanya masih berbentuk promise lalu pake json [await resDataDetail.json()]
 // fetch api
 // pelajari useState(0, true, [], dll)
+// pelajari fetch data async await
+//
